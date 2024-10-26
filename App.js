@@ -129,9 +129,9 @@ export default function App() {
             />
           </View>
           <FlatList 
-            data= {location}
+            data= {curLocation}
             horizontal = {true}
-            renderItem = {({item}) => <Image source = {item} style = {styles.smallImgSize}/>}
+            renderItem = {({item}) => <Image source = {{uri: item.image}} style = {styles.smallImgSize}/>}
             
           />
           <View
