@@ -144,9 +144,9 @@ export default function App() {
             <Text>Recommend</Text>
           </View>
           <FlatList 
-            data= {location}
+            data= {curLocation}
             horizontal = {true}
-            renderItem = {({item}) => <Image source = {item} style = {styles.bigImgSize}/>}
+            renderItem = {({item}) => <Image source = {{uri: item.image}} style = {styles.bigImgSize}/>}
             
           />
         </ScrollView>
