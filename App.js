@@ -9,22 +9,25 @@ import {
   TextInput,
   FlatList,
 } from 'react-native';
+import axios from 'axios'
+import {useLayoutEffect, useState} from 'react'
 import Colors from './constants/Colors';
 
 
 
 export default function App() {
-  const category = [
-    { name: 'Resort', image: require('./assets/resort.png') },
-    { name: 'Homestay', image: require('./assets/homestay.png') },
-    { name: 'Hotel', image: require('./assets/hotel.png') },
-    { name: 'Lodge', image: require('./assets/lodge.png') },
-    { name: 'Villa', image: require('./assets/villa.png') },
-    { name: 'Apartment', image: require('./assets/apartment.png') },
-    { name: 'Hostel', image: require('./assets/hostel.png') },
-    { name: 'See all', image: require('./assets/seeall.png') },
+  let category = [
+    { "name": "Resort", "image": require("./assets/resort.png") },
+    { "name": "Homestay", "image": require("./assets/homestay.png") },
+    { "name": "Hotel", "image": require("./assets/hotel.png") },
+    { "name": "Lodge", "image": require("./assets/lodge.png") },
+    { "name": "Villa", "image": require("./assets/villa.png") },
+    { "name": "Apartment", "image": require("./assets/apartment.png") },
+    { "name": "Hostel", "image": require("./assets/hostel.png") },
+    { "name": "See all", "image": require("./assets/seeall.png") },
   ];
-
+  const [curCategory, setCurCategory] = useState([])
+  const [curLocation, setCurlocation] = useState([])
   const location = [
     require('./assets/photo1.png'),
     require('./assets/photo2.png'),
@@ -33,6 +36,16 @@ export default function App() {
     require('./assets/photo5.png'),
     require('./assets/photo1.png'),
   ];
+
+  useLayoutEffect(() =>{
+    const getData = async() =>{
+      let res = await axios.get('https://670de03b073307b4ee44bda5.mockapi.io/api/v1/category');
+      setCurCategory(res.data);
+      res = await axios.get('https://670de03b073307b4ee44bda5.mockapi.io/api/v1/photos')
+      setCurlocation(res.data);
+    }
+    getData();
+  },[])
 
 
   return (
@@ -89,12 +102,12 @@ export default function App() {
           </View>
           <View style = {{alignItems: 'center' ,flexDirection:'row'}}>
           <FlatList
-            data={category}
+            data={curCategory}
             numColumns={4}
             keyExtractor={(item) => item.name}
             renderItem = {({item}) =>(
               <View style = {{flexDirection:"column", alignItems:"center",marginTop: 12}}>
-                <Image source = {item.image} />
+                <Image source = {{uri: item.image}} style= {{width: 64,height:64}} />
                 <Text>{item.name}</Text>
               </View>
             )}
