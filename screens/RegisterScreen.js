@@ -1,35 +1,35 @@
 import { StyleSheet, TextInput, View,Text, Alert, Button } from "react-native";
-import Colors from "../constants/Colors";
+import Colors from "../constants/Colors.js";
 import CustomTextInput from "../components/CustomTextInput.js";
 import { useContext, useState } from "react";
 import { UserContext } from "../stores/UserContext.js";
 
-const LoginScreen = ({navigation}) => {
+const Register = ({navigation}) => {
     const [username,setUsername] = useState("hegoplay4");
     const [password, setPassword] = useState("abdsc");
-    const [chk,setChk] = useState("`")
+    const [imgUri,setImgUri] = useState("")
     const context = useContext(UserContext);
 
-    const login = async() =>{
+    const login = () =>{
         
-        let check = await context.checkUser(username,password);
-        if (check == true  ){
-            context.getUser(username);
-            navigation.navigate("MainScreen")
-        }
-        else{
-            Alert.alert("Sai tai khoan hoac mat khau")
-        }
+        navigation.goBack();
     }
 
-    const register =  () =>{
-        navigation.navigate("RegisterScreen");
+    const register = async () =>{
+        const res = await context.createUser(username,password,imgUri);
+        if (res.status == true){
+            navigation.navigate("LoginScreen")
+            Alert.alert("Dang ki thanh cong")
+        }
+        else{
+            Alert.alert(res.message)
+        }
     }
 
     return (
         <View style = {styles.container}>
             <View style = {styles.form}>
-                <Text style= {[{textAlign:"center"},styles.textColor]}>Đăng nhập</Text>
+                <Text style= {[{textAlign:"center", fontWeight:"bold"},styles.textColor]}>Đăng ký</Text>
                 {/* tai khoan */}
                 <View>
                     <Text style={styles.textColor}>Tài khoản</Text>
@@ -50,6 +50,18 @@ const LoginScreen = ({navigation}) => {
                         isPassword={true}
                     />
                 </View>
+                {/* imgUri */}
+                <View>
+                    <Text style={styles.textColor}>ImgUri</Text>
+                    <CustomTextInput
+                        inputTxt={imgUri}
+                        setInputTxt={setImgUri}
+                        iconName="image-outline"
+                        isPassword={false}
+                        placeholder="give image uri"
+                    />
+                </View>
+                
                 <View style = {{marginTop:12, flexDirection: "row", gap: 12,justifyContent:"center"}}>
                     <Button onPress={login} title="Dang nhap"/>
                     <Button onPress={register} title="Dang ky"/>
@@ -59,7 +71,7 @@ const LoginScreen = ({navigation}) => {
     )
 }
 
-export default LoginScreen;
+export default Register;
 
 const styles = StyleSheet.create({
     container:{

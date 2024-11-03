@@ -10,10 +10,12 @@ import {
   FlatList,
 } from "react-native";
 import axios from "axios";
-import { useLayoutEffect, useState } from "react";
+import { useContext, useLayoutEffect, useState } from "react";
 import Colors from "../constants/Colors.js";
+import { UserContext } from "../stores/UserContext.js";
 
 const MainScreen = () => {
+  const context = useContext(UserContext);
   let category = [
     { name: "Resort", image: require("../assets/resort.png") },
     { name: "Homestay", image: require("../assets/homestay.png") },
@@ -68,14 +70,14 @@ const MainScreen = () => {
         <View style={styles.secondNav}>
           <View style={{ flexDirection: "row", gap: 12 }}>
             <Image
-              source={require("../assets/personicon.png")}
+              source={{uri: context.value.imgUri}}
               style={[styles.iconSize, { borderRadius: "50%" }]}
             />
             <View>
               <Text style={{ fontWeight: "bold", color: "white" }}>
                 Welcome!
               </Text>
-              <Text style={{ color: "white" }}>Donna Stroupe</Text>
+              <Text style={{ color: "white" }}>{context.value.username}</Text>
             </View>
           </View>
           <View>
