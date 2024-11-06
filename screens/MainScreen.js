@@ -8,13 +8,14 @@ import {
   Alert,
   TextInput,
   FlatList,
+  Pressable,
 } from "react-native";
 import axios from "axios";
 import { useContext, useLayoutEffect, useState } from "react";
 import Colors from "../constants/Colors.js";
 import { UserContext } from "../stores/UserContext.js";
 
-const MainScreen = () => {
+const MainScreen = ({navigation}) => {
   const context = useContext(UserContext);
   let category = [
     { name: "Resort", image: require("../assets/resort.png") },
@@ -70,7 +71,7 @@ const MainScreen = () => {
         <View style={styles.secondNav}>
           <View style={{ flexDirection: "row", gap: 12 }}>
             <Image
-              source={{uri: context.value.imgUri}}
+              source={{ uri: context.value.imgUri }}
               style={[styles.iconSize, { borderRadius: "50%" }]}
             />
             <View>
@@ -115,7 +116,7 @@ const MainScreen = () => {
                     flexDirection: "column",
                     alignItems: "center",
                     marginTop: 12,
-                    width: "25%"
+                    width: "25%",
                   }}
                 >
                   <Image
@@ -192,10 +193,14 @@ const MainScreen = () => {
             <Text style={styles.textWhite}>Search</Text>
           </View>
           <View style={{ flexDirection: "column", alignItems: "center" }}>
-            <Image
-              source={require("../assets/profileicon.png")}
-              style={styles.iconSize}
-            />
+            <Pressable onPress = {() => {
+              navigation.navigate("UpdateDeleteScreen");
+            }}>
+              <Image
+                source={{ uri: context.value.imgUri }}
+                style={styles.iconSize}
+              />
+            </Pressable>
             <Text style={styles.textWhite}>Profile</Text>
           </View>
         </View>

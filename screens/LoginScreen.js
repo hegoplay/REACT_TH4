@@ -5,13 +5,11 @@ import { useContext, useState } from "react";
 import { UserContext } from "../stores/UserContext.js";
 
 const LoginScreen = ({navigation}) => {
-    const [username,setUsername] = useState("hegoplay4");
-    const [password, setPassword] = useState("abdsc");
-    const [chk,setChk] = useState("`")
+    const [username,setUsername] = useState("");
+    const [password, setPassword] = useState("");
     const context = useContext(UserContext);
 
     const login = async() =>{
-        
         let check = await context.checkUser(username,password);
         if (check == true  ){
             context.getUser(username);
@@ -72,7 +70,7 @@ const styles = StyleSheet.create({
         width: 300,
         padding:12,
         height: 500,
-        backgroundColor: Colors.primary,
+        backgroundColor: "blue",
         shadowColor:"#171717",
         shadowOffset:{width: 2, height: 4},
         shadowOpacity: 0.7,

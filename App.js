@@ -6,6 +6,8 @@ import { View } from "react-native";
 import LoginScreen from "./screens/LoginScreen.js";
 import UserProvider from "./stores/UserContext.js";
 import Register from './screens/RegisterScreen.js'
+import UpdateDeleteScreen from './screens/UpdateDeleteScreen.js'
+
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -16,6 +18,7 @@ export default function App() {
           <Stack.Screen name="LoginScreen" component={LoginScreen} />
           <Stack.Screen name="MainScreen" component={MainScreen} />
           <Stack.Screen name="RegisterScreen" component={Register} />
+          <Stack.Screen name="UpdateDeleteScreen" component={UpdateDeleteScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </UserProvider>

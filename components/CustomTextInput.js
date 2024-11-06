@@ -9,6 +9,7 @@ const CustomTextInput = ({
   inputTxt = "",
   placeholder = "input text",
   setInputTxt = () =>{},
+  editable = true
 }) => {
   const [isHiding, setIsHiding] = useState(isPassword);
   return (
@@ -21,6 +22,7 @@ const CustomTextInput = ({
         secureTextEntry = {isHiding}
         placeholder={placeholder}
         placeholderTextColor={"gray"}
+        editable = {editable}
       />
       {isPassword && (
         <Pressable onPress={() =>{setIsHiding(x=> !x)}}>

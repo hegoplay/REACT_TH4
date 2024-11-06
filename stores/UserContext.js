@@ -8,7 +8,9 @@ export const UserContext = createContext({
     },
     getUser: async (username) => {},
     createUser: async (username, password, imgUri) => {},
-    checkUser: async (username, password) => {}
+    checkUser: async (username, password) => {},
+    updateUser: async (username,password)=>{},
+    deleteUser: async (username) =>{}
 });
 
 const UserProvider = ({ children }) => {
@@ -63,13 +65,36 @@ const UserProvider = ({ children }) => {
         }
     };
 
+    const updateUser = async (username,password) => {
+        try {
+            const response = await axios.put(`http://localhost:8880/users/${username}`,{
+                password
+            });
+            return response.data.message;
+        } catch (error) {
+            console.error("Error in getUser:", error);
+            return null;
+        }
+    };
+    const deleteUser = async (username)=>{
+        try {
+            const response = await axios.delete(`http://localhost:8880/users/${username}`);
+            return response.data.message;
+        } catch (error) {
+            console.error("Error in getUser:", error);
+            return null;
+        }
+    }
+
     return (
         <UserContext.Provider
             value={{
                 value: value,
                 getUser: getUser,
                 checkUser: checkUser,
-                createUser: createUser
+                createUser: createUser,
+                deleteUser: deleteUser,
+                updateUser,
             }}
         >
             {children}
