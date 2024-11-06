@@ -194,7 +194,7 @@ const MainScreen = ({navigation}) => {
           </View>
           <View style={{ flexDirection: "column", alignItems: "center" }}>
             <Pressable onPress = {() => {
-              navigation.navigate("UpdateDeleteScreen");
+              navigation.navigate("UpdateDeleteScreen",{username: context.value.username});
             }}>
               <Image
                 source={{ uri: context.value.imgUri }}

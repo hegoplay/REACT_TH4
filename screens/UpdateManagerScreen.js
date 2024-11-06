@@ -1,29 +1,34 @@
 import { StyleSheet, TextInput, View, Text, Alert, Button } from "react-native";
 import Colors from "../constants/Colors.js";
 import CustomTextInput from "../components/CustomTextInput.js";
-import { useContext, useState } from "react";
+import { useContext, useLayoutEffect, useState } from "react";
 import { UserContext } from "../stores/UserContext.js";
 import { useRoute } from "@react-navigation/native";
 
-const UpdateDeleteScreen = ({ navigation, route }) => {
+const UpdateManagerScreen = ({ navigation, route }) => {
+  const [user, setUser] = useState({});
   const context = useContext(UserContext);
-  const [username, setUsername] = useState(route.params.username);
-  const [password, setPassword] = useState("");
-  const [imgUri, setImgUri] = useState("");
+  const initUsername = route.params.username;
 
-  const deleteEvent = async () => {
-    const res = await context.deleteUser(username);
-    if (res == true) {
-      navigation.navigate("LoginScreen");
-    } else {
-      console.log("user ko ton tai");
-    }
-  };
+  useLayoutEffect(() => {
+    const InitUser = async () => {
+      const res = await context.getUserByName(initUsername);
+      console.log(res);
+      setUser(res);
+    };
+    InitUser();
+  }, []);
+
+  const editPassword = (pwd) =>{
+    setUser((x)=>{
+        return {...x, password: pwd}
+    })
+  }
 
   const update = async () => {
-    const res = await context.updateUser(username, password);
+    const res = await context.updateUser(user.username, user.password, user.imgUri, user.typeUser);
     if (res == true) {
-      navigation.goBack();
+      navigation.navigate("ManagerScreen");
     } else {
       console.log("cap nhat ko thanh cong");
     }
@@ -44,8 +49,7 @@ const UpdateDeleteScreen = ({ navigation, route }) => {
         <View>
           <Text style={styles.textColor}>Tài khoản</Text>
           <CustomTextInput
-            inputTxt={username}
-            setInputTxt={setUsername}
+            inputTxt={user.username}
             iconName="person"
             isPassword={false}
             editable={false}
@@ -55,10 +59,37 @@ const UpdateDeleteScreen = ({ navigation, route }) => {
         <View>
           <Text style={styles.textColor}>Mat khau</Text>
           <CustomTextInput
-            inputTxt={password}
-            setInputTxt={setPassword}
+            inputTxt={user.password}
+            setInputTxt={editPassword}
             iconName="person"
             isPassword={true}
+          />
+        </View>
+        {/* imgUrl */}
+        <View>
+          <Text style={styles.textColor}>Img Uri</Text>
+          <CustomTextInput
+            inputTxt={user.imgUri}
+            setInputTxt={ (uri) => setUser((x)=>{
+                return {...x, imgUri: uri}
+            })}
+            iconName="person"
+            isPassword={false}
+            editable={false}
+          />
+        </View>
+        {/* type*/}
+        <View>
+          <Text style={styles.textColor}>Kieu user</Text>
+          <CustomTextInput
+            inputTxt={user.typeUser}
+            setInputTxt={ (type) => setUser((x)=>{
+                return {...x, typeUser: type}
+            })}
+            iconName="person"
+            isPassword={false}
+            editable={false}
+            placeholder="user|admin"
           />
         </View>
 
@@ -70,12 +101,11 @@ const UpdateDeleteScreen = ({ navigation, route }) => {
             justifyContent: "center",
           }}
         >
-          <Button onPress={deleteEvent} title="Xoa" />
           <Button onPress={update} title="Sua" />
           <Button
             onPress={() => {
               navigation.navigate("LoginScreen");
-              context.value = {};
+              context.value = {}
             }}
             title="Log out"
           />
@@ -85,7 +115,7 @@ const UpdateDeleteScreen = ({ navigation, route }) => {
   );
 };
 
-export default UpdateDeleteScreen;
+export default UpdateManagerScreen;
 
 const styles = StyleSheet.create({
   container: {

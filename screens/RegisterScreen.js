@@ -17,7 +17,7 @@ const Register = ({navigation}) => {
 
     const register = async () =>{
         const res = await context.createUser(username,password,imgUri);
-        if (res.status == true){
+        if (res.message == true){
             navigation.navigate("LoginScreen")
             Alert.alert("Dang ki thanh cong")
         }
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems:"center",
         justifyContent:"center",
-        backgroundColor:"blue"
+        backgroundColor:"white"
     },
     form:{
         width: 300,
